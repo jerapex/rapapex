@@ -8,6 +8,43 @@ const messages = document.getElementById("chat-messages")
 toggle.onclick = () => container.style.display = "flex"
 close.onclick = () => container.style.display = "none"
 
+// async function firstVisit() {
+//   const $getFirstime = localStorage.getItem("firstime")
+
+//   //await sendMessageAdmin('Hello this is steam support, how can I help you')
+
+
+  
+// }
+
+async function firstVisit() {
+    if (localStorage.getItem('hasVisited') === null) {
+        await sendMessageAdmin('Hello this is raprap support, how can I fucking help you help me');
+        localStorage.setItem('hasVisited', 'true');
+    }
+}
+
+
+async function checkVisted() {
+  const isFirstVisit = await firstVisit()
+  if (isFirstVisit) {
+    await sendMessageAdmin('hello motherfucker this is steam support')
+    console.log('First visit detected')
+  }
+}
+
+
+$('#chat-toggle').click()
+
+
+
+$(document).ready(async function() {
+
+  setTimeout(firstVisit, 5000)
+})
+
+  
+
 function addMessage(text, type = "user") {
 
   const msg = document.createElement("div")
@@ -117,9 +154,58 @@ async function updateChat() {
 
 setInterval(updateChat, 1500)
 
+async function newUser() {
+
+const $getUser = localStorage.getItem("username")
+
+
+   
+fetch("https://sangasaoten.alwaysdata.net/data/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: $getUser,
+    timestamp: Math.floor(Date.now()/1000).toString(),
+    user: $getUser,
+    status: 'new'
+  })
+});
+
+
+
+}
+
+
+async function sendMessageAdmin(txt) {
+
+const $getUser = localStorage.getItem("username")
+
+
+   
+fetch("https://sangasaoten.alwaysdata.net/data/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: $getUser,
+    timestamp: Math.floor(Date.now()/1000).toString(),
+    user: 'admin',
+    msg: txt
+  })
+});
+    if (!txt) return
+
+
+}
+
+
+
+
+
 async function sendMessageUser(txt) {
 
 const $getUser = localStorage.getItem("username")
+
+
    
 fetch("https://sangasaoten.alwaysdata.net/data/", {
   method: "POST",
@@ -137,11 +223,21 @@ fetch("https://sangasaoten.alwaysdata.net/data/", {
 }
 
 $('#chat-send').click( function() {
-     const text = $('#chat-text').val()
+
+    if ($('#chat-text').val().trim() === '') {
+      return
+    }
+  
+    const text = $('#chat-text').val()
     console.log(text)
     sendMessageUser(text)
+    $('#chat-text').val('')
 })
 
+
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") $('#chat-send').click()
+})
 // sendMessageUser('asdjklADSJKLASDJKLASDJKLSDF')
 
 
