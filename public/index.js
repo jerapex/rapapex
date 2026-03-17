@@ -1,4 +1,4 @@
-const toggle = document.getElementById("chat-toggle")
+const toggle = document.getElementById("chat-toggle") 
 const container = document.getElementById("chat-container")
 const close = document.getElementById("chat-close")
 const send = document.getElementById("chat-send")
